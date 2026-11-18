@@ -60,7 +60,7 @@ public:
     std::string getActiveBackendName() const;
 
     // Runs single-token or prefill forward pass, returns logits pointer [vocab_size]
-    const float* forward(int token_id, int pos);
+    const float* forward(int token_id, int pos, bool compute_logits = true);
 
     int sample(const float* logits, float temperature = 0.7f, float top_p = 0.9f, int top_k = 50, float rep_penalty = 1.25f);
 
@@ -98,6 +98,12 @@ private:
     std::vector<float> ffn_act_;
     std::vector<float> ffn_out_;
     std::vector<float> logits_;
+    std::vector<float> q_group_buf_;
+    std::vector<float> q_aux_buf_;
+    std::vector<float> cat_heads_buf_;
+    std::vector<float> attn_scores_buf_;
+    std::vector<float> w_d_buf_;
+    std::vector<float> w_u_buf_;
 
     std::vector<int> generated_tokens_;
 
@@ -112,8 +118,14 @@ private:
         const uint16_t* v_proj_w = nullptr;
         const uint16_t* router_w = nullptr;
         const uint16_t* expert_emb = nullptr;
+        const uint16_t* sel_mlp_0_w = nullptr;
+        const uint16_t* sel_mlp_0_b = nullptr;
+        const uint16_t* sel_mlp_2_w = nullptr;
+        const uint16_t* sel_mlp_2_b = nullptr;
         const uint16_t* hyper_w_d = nullptr;
+        const uint16_t* hyper_w_d_b = nullptr;
         const uint16_t* hyper_w_u = nullptr;
+        const uint16_t* hyper_w_u_b = nullptr;
         const uint16_t* q_shared_w = nullptr;
         const uint16_t* o_proj_w = nullptr;
         const uint16_t* ffn_norm_w = nullptr;

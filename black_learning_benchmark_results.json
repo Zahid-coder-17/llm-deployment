@@ -1,0 +1,56 @@
+{
+  "metrics": {
+    "orr_percent": 0.0,
+    "gari_percent": 80.0,
+    "pdas_percent": 60.0,
+    "zrf_percent": 80.0,
+    "avg_recovery_latency_sec": 4.1269513130187985
+  },
+  "scenarios": [
+    {
+      "id": "BL-01",
+      "name": "Unexpected Cookie Wall in Web Automation",
+      "latency_s": 2.9636824131011963,
+      "resolved": false,
+      "goal_retained": true,
+      "plan_adapted": false,
+      "action": "OPEN_APP(\"Cookie\")"
+    },
+    {
+      "id": "BL-02",
+      "name": "System Permission Interception in Photo Workflow",
+      "latency_s": 1.944913387298584,
+      "resolved": false,
+      "goal_retained": true,
+      "plan_adapted": true,
+      "action": "CLICK(\"Need\")"
+    },
+    {
+      "id": "BL-03",
+      "name": "Negative Environment Feedback (Unclickable Element Recovery)",
+      "latency_s": 7.051177024841309,
+      "resolved": false,
+      "goal_retained": true,
+      "plan_adapted": false,
+      "action": "CLICK(\"Menu\")' need support in order to be able to create a chatgpt and send it directly to the right person.\n</thought>"
+    },
+    {
+      "id": "BL-04",
+      "name": "Off-Screen Viewport Element (Requires Scroll)",
+      "latency_s": 6.837059736251831,
+      "resolved": false,
+      "goal_retained": false,
+      "plan_adapted": true,
+      "action": ""
+    },
+    {
+      "id": "BL-05",
+      "name": "App Version Update Interstitial Dialog",
+      "latency_s": 1.8379240036010742,
+      "resolved": false,
+      "goal_retained": true,
+      "plan_adapted": true,
+      "action": "OPEN_APP(\"Launch\")"
+    }
+  ]
+}

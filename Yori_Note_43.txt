@@ -1,0 +1,1 @@
+daily tasks: 1. Model merge 2. Benchmark 3. APK build

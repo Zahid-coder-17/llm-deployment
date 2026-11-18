@@ -1,0 +1,1982 @@
+=====================================================================================
+ MARIA-1B + GRPO COT 100-PROMPT BENCHMARK REPORT: REAL STATE VERIFICATION
+=====================================================================================
+
+PROMPT 001: "Set an alarm for 09:30 AM labeled 'Team Standup'" (App: com.sec.android.app.clockpackage)
+Result: [FAIL] | Avg Reward: +0.55
+  Turn 1:
+    Thought:      Inspecting alarm list: Alarm for 09:30 AM does not exist. Clicking Add alarm (+) at [4].
+    Action:       CLICK([4])
+    Expected:     CLICK([4])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 2:
+    Thought:      Entering alarm label 'Team Standup' into the name field at [2].
+    Action:       CLICK([2])
+    Expected:     TYPE([2], "Team Standup")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 3:
+    Thought:      Saving the configured alarm at [3].
+    Action:       CLICK([3])
+    Expected:     CLICK([3])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 4:
+    Thought:      Alarm has been set and verified.
+    Action:       TYPE([2:ReadText")
+    Expected:     DONE("Set alarm for 09:30 AM labeled Team Standup.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 002: "Turn on Flight mode" (App: com.android.settings)
+Result: [FAIL] | Avg Reward: +0.75
+  Turn 1:
+    Thought:      Flight mode is currently OFF. I will toggle switch [3].
+    Action:       CLICK([3])
+    Expected:     CLICK([3])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 2:
+    Thought:      Flight mode is now ON. The task is complete.
+    Action:       CLICK([1])
+    Expected:     DONE("Flight mode has been turned ON.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 003: "Send a WhatsApp message to Tech Support saying 'I will arrive in 20 minutes.'" (App: com.whatsapp)
+Result: [FAIL] | Avg Reward: -0.03
+  Turn 1:
+    Thought:      I see Tech Support in the recent chats list at [3]. Opening chat directly.
+    Action:       POST([3])
+    Expected:     CLICK([3])
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Now typing the message 'I will arrive in 20 minutes.' into the input box at [3].
+    Action:       CLICK([3])
+    Expected:     TYPE([3], "I will arrive in 20 minutes.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 3:
+    Thought:      Tapping the Send button at [4].
+    Action:       CLICK([4])
+    Expected:     CLICK([4])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 4:
+    Thought:      Message has been sent successfully.
+    Action:       send [911 message to Tech Support.")
+    Expected:     DONE("Sent WhatsApp message to Tech Support.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 004: "Turn on Wi-Fi" (App: com.android.settings)
+Result: [FAIL] | Avg Reward: +0.23
+  Turn 1:
+    Thought:      I need to open the Connections settings menu where Wi-Fi is located.
+    Action:       CLICK([1].Set()
+    Expected:     CLICK([4])
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Wi-Fi is currently OFF. I will toggle switch [2].
+    Action:       CLICK([2])
+    Expected:     CLICK([2])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 3:
+    Thought:      Wi-Fi is now ON. The task is complete.
+    Action:       CLICK([1])
+    Expected:     DONE("Wi-Fi has been turned ON.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 005: "Set an alarm for 07:45 AM labeled 'Flight'" (App: com.sec.android.app.clockpackage)
+Result: [FAIL] | Avg Reward: +0.00
+  Turn 1:
+    Thought:      Inspecting alarm list: Alarm for 07:45 AM already exists at index [4] and is active (ON). No duplicate alarm needed.
+    Action:       CLICK([4])
+    Expected:     DONE("Alarm for 07:45 AM is already active.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 006: "Send a WhatsApp message to Office Manager saying 'Meeting at 6 PM'" (App: com.whatsapp)
+Result: [FAIL] | Avg Reward: +0.55
+  Turn 1:
+    Thought:      I see Office Manager in the recent chats list at [7]. Opening chat directly.
+    Action:       CLICK([7])
+    Expected:     CLICK([7])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 2:
+    Thought:      Now typing the message 'Meeting at 6 PM' into the input box at [4].
+    Action:       CLICK([4])
+    Expected:     TYPE([4], "Meeting at 6 PM")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 3:
+    Thought:      Tapping the Send button at [5].
+    Action:       CLICK([5])
+    Expected:     CLICK([5])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 4:
+    Thought:      Message has been sent successfully.
+    Action:       sendMore [Data
+    Expected:     DONE("Sent WhatsApp message to Office Manager.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 007: "Send a WhatsApp message to Robert Downey saying 'I will arrive in 20 minutes.'" (App: com.whatsapp)
+Result: [FAIL] | Avg Reward: -0.03
+  Turn 1:
+    Thought:      I see Robert Downey in the recent chats list at [8]. Opening chat directly.
+    Action:       POST([8])
+    Expected:     CLICK([8])
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Now typing the message 'I will arrive in 20 minutes.' into the input box at [4].
+    Action:       CLICK([4])
+    Expected:     TYPE([4], "I will arrive in 20 minutes.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 3:
+    Thought:      Tapping the Send button at [5].
+    Action:       CLICK([5])
+    Expected:     CLICK([5])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 4:
+    Thought:      Message has been sent successfully.
+    Action:       send [911 message to Robert Downey].
+    Expected:     DONE("Sent WhatsApp message to Robert Downey.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 008: "Turn on NFC" (App: com.android.settings)
+Result: [FAIL] | Avg Reward: +0.75
+  Turn 1:
+    Thought:      NFC is currently OFF. I will toggle switch [6].
+    Action:       CLICK([6])
+    Expected:     CLICK([6])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 2:
+    Thought:      NFC is now ON. The task is complete.
+    Action:       CLICK([1])
+    Expected:     DONE("NFC has been turned ON.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 009: "Send a WhatsApp message to Dr. Smith saying 'Meeting at 5 PM'" (App: com.whatsapp)
+Result: [FAIL] | Avg Reward: +0.23
+  Turn 1:
+    Thought:      The chat with Dr. Smith is already open. Typing the message into input box at [4].
+    Action:       CLICK([4])
+    Expected:     TYPE([4], "Meeting at 5 PM")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Tapping the Send button at [5].
+    Action:       CLICK([5])
+    Expected:     CLICK([5])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 3:
+    Thought:      Message has been sent successfully.
+    Action:       GET
+    Expected:     DONE("Sent WhatsApp message to Dr. Smith.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 010: "Set an alarm for 09:00 AM labeled 'Workout'" (App: com.sec.android.app.clockpackage)
+Result: [FAIL] | Avg Reward: -0.80
+  Turn 1:
+    Thought:      Inspecting alarm list: Alarm for 09:00 AM exists at index [6] but is OFF. Toggling switch [6] to enable it without duplicate.
+    Action:       Set alarm set at index [6].
+    Expected:     CLICK([6])
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Alarm for 09:00 AM is now verified as ON on screen. Task complete.
+    Action:       GET
+    Expected:     DONE("Alarm for 09:00 AM has been enabled.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 011: "Set an alarm for 06:45 PM labeled 'Team Standup'" (App: com.sec.android.app.clockpackage)
+Result: [FAIL] | Avg Reward: -0.80
+  Turn 1:
+    Thought:      Inspecting alarm list: Alarm for 06:45 PM already exists at index [4] and is active (ON). No duplicate alarm needed.
+    Action:       GET
+    Expected:     DONE("Alarm for 06:45 PM is already active.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 012: "Send a WhatsApp message to Anna Lee saying 'Meeting at 12 PM'" (App: com.whatsapp)
+Result: [FAIL] | Avg Reward: -0.03
+  Turn 1:
+    Thought:      I see Anna Lee in the recent chats list at [6]. Opening chat directly.
+    Action:       GETS = [6].All Facebook searches come to represented6].
+    Expected:     CLICK([6])
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Now typing the message 'Meeting at 12 PM' into the input box at [4].
+    Action:       CLICK([4])
+    Expected:     TYPE([4], "Meeting at 12 PM")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 3:
+    Thought:      Tapping the Send button at [5].
+    Action:       CLICK([5])
+    Expected:     CLICK([5])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 4:
+    Thought:      Message has been sent successfully.
+    Action:       send([Users([Users("printText")
+    Expected:     DONE("Sent WhatsApp message to Anna Lee.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 013: "Set an alarm for 07:00 AM labeled 'Team Standup'" (App: com.sec.android.app.clockpackage)
+Result: [FAIL] | Avg Reward: -0.40
+  Turn 1:
+    Thought:      Inspecting alarm list: Alarm for 07:00 AM exists at index [3] but is OFF. Toggling switch [3] to enable it without duplicate.
+    Action:       Set alarm set by UI
+    Expected:     CLICK([3])
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Alarm for 07:00 AM is now verified as ON on screen. Task complete.
+    Action:       TYPE([4], "Alarm 06:00 AM labeled Team Standup")
+    Expected:     DONE("Alarm for 07:00 AM has been enabled.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 014: "Turn on NFC" (App: com.android.settings)
+Result: [FAIL] | Avg Reward: +0.00
+  Turn 1:
+    Thought:      Inspecting screen: NFC is already ON at index [4]. No toggle required.
+    Action:       CLICK([4])
+    Expected:     DONE("NFC is already ON.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 015: "Send a WhatsApp message to Elon saying 'Meeting at 6 PM'" (App: com.whatsapp)
+Result: [FAIL] | Avg Reward: +0.55
+  Turn 1:
+    Thought:      I see Elon in the recent chats list at [4]. Opening chat directly.
+    Action:       CLICK([4])
+    Expected:     CLICK([4])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 2:
+    Thought:      Now typing the message 'Meeting at 6 PM' into the input box at [4].
+    Action:       CLICK([4])
+    Expected:     TYPE([4], "Meeting at 6 PM")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 3:
+    Thought:      Tapping the Send button at [5].
+    Action:       CLICK([5])
+    Expected:     CLICK([5])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 4:
+    Thought:      Message has been sent successfully.
+    Action:       sendMore [Data
+    Expected:     DONE("Sent WhatsApp message to Elon.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 016: "Turn on Location" (App: com.android.settings)
+Result: [FAIL] | Avg Reward: +0.75
+  Turn 1:
+    Thought:      Location is currently OFF. I will toggle switch [4].
+    Action:       CLICK([4])
+    Expected:     CLICK([4])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 2:
+    Thought:      Location is now ON. The task is complete.
+    Action:       CLICK([1])
+    Expected:     DONE("Location has been turned ON.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 017: "Switch to Dark mode" (App: com.android.settings)
+Result: [FAIL] | Avg Reward: +0.75
+  Turn 1:
+    Thought:      Dark mode is currently OFF. I will toggle switch [1].
+    Action:       CLICK([1])
+    Expected:     CLICK([1])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 2:
+    Thought:      Dark mode is now ON. The task is complete.
+    Action:       CLICK([1])
+    Expected:     DONE("Dark mode has been turned ON.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 018: "Turn on Do not disturb" (App: com.android.settings)
+Result: [FAIL] | Avg Reward: -0.80
+  Turn 1:
+    Thought:      Inspecting screen: Do not disturb is already ON at index [3]. No toggle required.
+    Action:       Do not disturb is already ON at index I3].
+    Expected:     DONE("Do not disturb is already ON.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 019: "Turn off NFC" (App: com.android.settings)
+Result: [FAIL] | Avg Reward: +0.00
+  Turn 1:
+    Thought:      Inspecting screen: NFC is already OFF at index [4]. No toggle required.
+    Action:       CLICK([4])
+    Expected:     DONE("NFC is already OFF.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 020: "Turn on Wi-Fi" (App: com.android.settings)
+Result: [FAIL] | Avg Reward: +0.00
+  Turn 1:
+    Thought:      Inspecting screen: Wi-Fi is already ON at index [3]. No toggle required.
+    Action:       CLICK([3])
+    Expected:     DONE("Wi-Fi is already ON.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 021: "Send a WhatsApp message to David Miller saying 'I will arrive in 15 minutes.'" (App: com.whatsapp)
+Result: [FAIL] | Avg Reward: -0.03
+  Turn 1:
+    Thought:      I see David Miller in the recent chats list at [5]. Opening chat directly.
+    Action:       POST([5])
+    Expected:     CLICK([5])
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Now typing the message 'I will arrive in 15 minutes.' into the input box at [3].
+    Action:       CLICK([3])
+    Expected:     TYPE([3], "I will arrive in 15 minutes.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 3:
+    Thought:      Tapping the Send button at [4].
+    Action:       CLICK([4])
+    Expected:     CLICK([4])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 4:
+    Thought:      Message has been sent successfully.
+    Action:       send ([9")
+    Expected:     DONE("Sent WhatsApp message to David Miller.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 022: "Send a WhatsApp message to Emily Watson saying 'I will arrive in 5 minutes.'" (App: com.whatsapp)
+Result: [FAIL] | Avg Reward: +0.23
+  Turn 1:
+    Thought:      The chat with Emily Watson is already open. Typing the message into input box at [4].
+    Action:       CLICK([4])
+    Expected:     TYPE([4], "I will arrive in 5 minutes.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Tapping the Send button at [5].
+    Action:       CLICK([5])
+    Expected:     CLICK([5])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 3:
+    Thought:      Message has been sent successfully.
+    Action:       send ([NS)
+    Expected:     DONE("Sent WhatsApp message to Emily Watson.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 023: "Set an alarm for 09:15 PM labeled 'Quantum Leap'" (App: com.sec.android.app.clockpackage)
+Result: [FAIL] | Avg Reward: -0.80
+  Turn 1:
+    Thought:      Inspecting alarm list: Alarm for 09:15 PM already exists at index [5] and is active (ON). No duplicate alarm needed.
+    Action:       GET
+    Expected:     DONE("Alarm for 09:15 PM is already active.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 024: "Turn on Bluetooth" (App: com.android.settings)
+Result: [FAIL] | Avg Reward: +0.75
+  Turn 1:
+    Thought:      Bluetooth is currently OFF. I will toggle switch [4].
+    Action:       CLICK([4])
+    Expected:     CLICK([4])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 2:
+    Thought:      Bluetooth is now ON. The task is complete.
+    Action:       CLICK([1])
+    Expected:     DONE("Bluetooth has been turned ON.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 025: "Send a WhatsApp message to Alex Mercer saying 'Meeting at 7 PM'" (App: com.whatsapp)
+Result: [FAIL] | Avg Reward: +0.62
+  Turn 1:
+    Thought:      Alex Mercer is not in recent chats. Clicking Search button at [2].
+    Action:       CLICK([2])
+    Expected:     CLICK([2])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 2:
+    Thought:      Typing contact name 'Alex Mercer' into search bar [1].
+    Action:       CLICK([1])
+    Expected:     TYPE([1], "Alex Mercer")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 3:
+    Thought:      Found search result for Alex Mercer at [2]. Opening chat.
+    Action:       CLICK([2])
+    Expected:     CLICK([2])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 4:
+    Thought:      Typing the message 'Meeting at 7 PM' into the input box at [3].
+    Action:       CLICK([3])
+    Expected:     TYPE([3], "Meeting at 7 PM")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 5:
+    Thought:      Tapping the Send button at [4].
+    Action:       CLICK([4])
+    Expected:     CLICK([4])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 6:
+    Thought:      Message has been sent successfully.
+    Action:       CLICK([7].
+    Expected:     DONE("Sent WhatsApp message to Alex Mercer.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 026: "Turn off Location" (App: com.android.settings)
+Result: [FAIL] | Avg Reward: +0.50
+  Turn 1:
+    Thought:      I need to open the Notifications settings menu where Location is located.
+    Action:       CLICK([1])
+    Expected:     CLICK([4])
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Location is currently ON. I will toggle switch [6].
+    Action:       CLICK([6])
+    Expected:     CLICK([6])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 3:
+    Thought:      Location is now OFF. The task is complete.
+    Action:       CLICK([1])
+    Expected:     DONE("Location has been turned OFF.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 027: "Send a WhatsApp message to Elon saying 'Meeting at 1 PM'" (App: com.whatsapp)
+Result: [FAIL] | Avg Reward: +0.55
+  Turn 1:
+    Thought:      I see Elon in the recent chats list at [8]. Opening chat directly.
+    Action:       CLICK([8])
+    Expected:     CLICK([8])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 2:
+    Thought:      Now typing the message 'Meeting at 1 PM' into the input box at [3].
+    Action:       CLICK([3])
+    Expected:     TYPE([3], "Meeting at 1 PM")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 3:
+    Thought:      Tapping the Send button at [4].
+    Action:       CLICK([4])
+    Expected:     CLICK([4])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 4:
+    Thought:      Message has been sent successfully.
+    Action:       send [1]
+    Expected:     DONE("Sent WhatsApp message to Elon.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 028: "Set an alarm for 07:30 PM labeled 'Gym'" (App: com.sec.android.app.clockpackage)
+Result: [FAIL] | Avg Reward: -0.40
+  Turn 1:
+    Thought:      Inspecting alarm list: Alarm for 07:30 PM exists at index [4] but is OFF. Toggling switch [4] to enable it without duplicate.
+    Action:       GET
+    Expected:     CLICK([4])
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Alarm for 07:30 PM is now verified as ON on screen. Task complete.
+    Action:       CLICK([6])
+    Expected:     DONE("Alarm for 07:30 PM has been enabled.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 029: "Set an alarm for 06:00 PM labeled 'Client Call'" (App: com.sec.android.app.clockpackage)
+Result: [FAIL] | Avg Reward: -0.80
+  Turn 1:
+    Thought:      Inspecting alarm list: Alarm for 06:00 PM already exists at index [6] and is active (ON). No duplicate alarm needed.
+    Action:       GET
+    Expected:     DONE("Alarm for 06:00 PM is already active.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 030: "Turn on Wi-Fi" (App: com.android.settings)
+Result: [FAIL] | Avg Reward: +0.00
+  Turn 1:
+    Thought:      Inspecting screen: Wi-Fi is already ON at index [3]. No toggle required.
+    Action:       CLICK([3])
+    Expected:     DONE("Wi-Fi is already ON.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 031: "Turn off Do not disturb" (App: com.android.settings)
+Result: [FAIL] | Avg Reward: +0.00
+  Turn 1:
+    Thought:      Inspecting screen: Do not disturb is already OFF at index [2]. No toggle required.
+    Action:       CLICK([2])
+    Expected:     DONE("Do not disturb is already OFF.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 032: "Set an alarm for 06:45 AM labeled 'Morning Run'" (App: com.sec.android.app.clockpackage)
+Result: [FAIL] | Avg Reward: -0.80
+  Turn 1:
+    Thought:      Inspecting alarm list: Alarm for 06:45 AM already exists at index [6] and is active (ON). No duplicate alarm needed.
+    Action:       GET
+    Expected:     DONE("Alarm for 06:45 AM is already active.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 033: "Send a WhatsApp message to David Miller saying 'Meeting at 8 PM'" (App: com.whatsapp)
+Result: [FAIL] | Avg Reward: +0.23
+  Turn 1:
+    Thought:      David Miller is not in recent chats. Clicking Search button at [2].
+    Action:       GO(B):
+    Expected:     CLICK([2])
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Typing contact name 'David Miller' into search bar [1].
+    Action:       CLICK([1])
+    Expected:     TYPE([1], "David Miller")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 3:
+    Thought:      Found search result for David Miller at [2]. Opening chat.
+    Action:       CLICK([2])
+    Expected:     CLICK([2])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 4:
+    Thought:      Typing the message 'Meeting at 8 PM' into the input box at [3].
+    Action:       CLICK([3])
+    Expected:     TYPE([3], "Meeting at 8 PM")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 5:
+    Thought:      Tapping the Send button at [4].
+    Action:       CLICK([4])
+    Expected:     CLICK([4])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 6:
+    Thought:      Message has been sent successfully.
+    Action:       sendTime()
+    Expected:     DONE("Sent WhatsApp message to David Miller.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 034: "Turn off Bluetooth" (App: com.android.settings)
+Result: [FAIL] | Avg Reward: +0.00
+  Turn 1:
+    Thought:      Inspecting screen: Bluetooth is already OFF at index [6]. No toggle required.
+    Action:       CLICK([6])
+    Expected:     DONE("Bluetooth is already OFF.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 035: "Send a WhatsApp message to Robert Downey saying 'Meeting at 11 PM'" (App: com.whatsapp)
+Result: [FAIL] | Avg Reward: +0.55
+  Turn 1:
+    Thought:      I see Robert Downey in the recent chats list at [3]. Opening chat directly.
+    Action:       CLICK([3])
+    Expected:     CLICK([3])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 2:
+    Thought:      Now typing the message 'Meeting at 11 PM' into the input box at [4].
+    Action:       CLICK([4])
+    Expected:     TYPE([4], "Meeting at 11 PM")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 3:
+    Thought:      Tapping the Send button at [5].
+    Action:       CLICK([5])
+    Expected:     CLICK([5])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 4:
+    Thought:      Message has been sent successfully.
+    Action:       sendMore [Data
+    Expected:     DONE("Sent WhatsApp message to Robert Downey.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 036: "Turn off Wi-Fi" (App: com.android.settings)
+Result: [FAIL] | Avg Reward: +0.00
+  Turn 1:
+    Thought:      Inspecting screen: Wi-Fi is already OFF at index [6]. No toggle required.
+    Action:       CLICK([6])
+    Expected:     DONE("Wi-Fi is already OFF.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 037: "Set an alarm for 07:30 AM labeled 'Morning Run'" (App: com.sec.android.app.clockpackage)
+Result: [FAIL] | Avg Reward: -0.80
+  Turn 1:
+    Thought:      Inspecting alarm list: Alarm for 07:30 AM exists at index [3] but is OFF. Toggling switch [3] to enable it without duplicate.
+    Action:       Set alarm for 07:30 AM listed tomorrow menu: Alarm. Wake time.")
+    Expected:     CLICK([3])
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Alarm for 07:30 AM is now verified as ON on screen. Task complete.
+    Action:       TYPE([35): Get alarm for 07:30 AM labeled Morning Run.")
+    Expected:     DONE("Alarm for 07:30 AM has been enabled.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 038: "Turn on Battery saver" (App: com.android.settings)
+Result: [FAIL] | Avg Reward: +0.50
+  Turn 1:
+    Thought:      I need to open the Notifications settings menu where Battery saver is located.
+    Action:       CLICK([6])
+    Expected:     CLICK([2])
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+  Turn 2:
+    Thought:      Battery saver is currently OFF. I will toggle switch [6].
+    Action:       CLICK([6])
+    Expected:     CLICK([6])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 3:
+    Thought:      Battery saver is now ON. The task is complete.
+    Action:       CLICK([1])
+    Expected:     DONE("Battery saver has been turned ON.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 039: "Set an alarm for 11:45 PM labeled 'Morning Run'" (App: com.sec.android.app.clockpackage)
+Result: [FAIL] | Avg Reward: +0.00
+  Turn 1:
+    Thought:      Inspecting alarm list: Alarm for 11:45 PM already exists at index [2] and is active (ON). No duplicate alarm needed.
+    Action:       CLICK([2])
+    Expected:     DONE("Alarm for 11:45 PM is already active.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 040: "Set an alarm for 10:30 PM labeled 'Team Standup'" (App: com.sec.android.app.clockpackage)
+Result: [FAIL] | Avg Reward: -0.80
+  Turn 1:
+    Thought:      Inspecting alarm list: Alarm for 10:30 PM already exists at index [6] and is active (ON). No duplicate alarm needed.
+    Action:       GET
+    Expected:     DONE("Alarm for 10:30 PM is already active.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 041: "Send a WhatsApp message to Sarah Connor saying 'Meeting at 1 PM'" (App: com.whatsapp)
+Result: [FAIL] | Avg Reward: +0.62
+  Turn 1:
+    Thought:      Sarah Connor is not in recent chats. Clicking Search button at [2].
+    Action:       CLICK([2])
+    Expected:     CLICK([2])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 2:
+    Thought:      Typing contact name 'Sarah Connor' into search bar [1].
+    Action:       CLICK([1])
+    Expected:     TYPE([1], "Sarah Connor")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 3:
+    Thought:      Found search result for Sarah Connor at [2]. Opening chat.
+    Action:       CLICK([2])
+    Expected:     CLICK([2])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 4:
+    Thought:      Typing the message 'Meeting at 1 PM' into the input box at [3].
+    Action:       CLICK([3])
+    Expected:     TYPE([3], "Meeting at 1 PM")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 5:
+    Thought:      Tapping the Send button at [4].
+    Action:       CLICK([4])
+    Expected:     CLICK([4])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 6:
+    Thought:      Message has been sent successfully.
+    Action:       getMessages() is successful
+    Expected:     DONE("Sent WhatsApp message to Sarah Connor.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 042: "Send a WhatsApp message to Michael Brown saying 'I will arrive in 10 minutes.'" (App: com.whatsapp)
+Result: [FAIL] | Avg Reward: +0.75
+  Turn 1:
+    Thought:      Michael Brown is not in recent chats. Clicking Search button at [2].
+    Action:       CLICK([2])
+    Expected:     CLICK([2])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 2:
+    Thought:      Typing contact name 'Michael Brown' into search bar [1].
+    Action:       CLICK([1])
+    Expected:     TYPE([1], "Michael Brown")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 3:
+    Thought:      Found search result for Michael Brown at [2]. Opening chat.
+    Action:       CLICK([2])
+    Expected:     CLICK([2])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 4:
+    Thought:      Typing the message 'I will arrive in 10 minutes.' into the input box at [3].
+    Action:       CLICK([3])
+    Expected:     TYPE([3], "I will arrive in 10 minutes.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 5:
+    Thought:      Tapping the Send button at [4].
+    Action:       CLICK([4])
+    Expected:     CLICK([4])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 6:
+    Thought:      Message has been sent successfully.
+    Action:       CLICK([1])
+    Expected:     DONE("Sent WhatsApp message to Michael Brown.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 043: "Turn off Bluetooth" (App: com.android.settings)
+Result: [FAIL] | Avg Reward: +0.75
+  Turn 1:
+    Thought:      Bluetooth is currently ON. I will toggle switch [1].
+    Action:       CLICK([1])
+    Expected:     CLICK([1])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 2:
+    Thought:      Bluetooth is now OFF. The task is complete.
+    Action:       CLICK([6])
+    Expected:     DONE("Bluetooth has been turned OFF.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 044: "Enable Mobile Hotspot" (App: com.android.settings)
+Result: [FAIL] | Avg Reward: +0.50
+  Turn 1:
+    Thought:      I need to open the Connections settings menu where Mobile Hotspot is located.
+    Action:       CLICK([1])
+    Expected:     CLICK([4])
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Mobile Hotspot is currently OFF. I will toggle switch [1].
+    Action:       CLICK([1])
+    Expected:     CLICK([1])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 3:
+    Thought:      Mobile Hotspot is now ON. The task is complete.
+    Action:       CLICK([3])
+    Expected:     DONE("Mobile Hotspot has been turned ON.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 045: "Turn off Battery saver" (App: com.android.settings)
+Result: [FAIL] | Avg Reward: +0.23
+  Turn 1:
+    Thought:      I need to open the Notifications settings menu where Battery saver is located.
+    Action:       CLICK([7])
+    Expected:     CLICK([2])
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+  Turn 2:
+    Thought:      Battery saver is currently ON. I will toggle switch [4].
+    Action:       CLICK([4])
+    Expected:     CLICK([4])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 3:
+    Thought:      Battery saver is now OFF. The task is complete.
+    Action:       GET****
+    Expected:     DONE("Battery saver has been turned OFF.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 046: "Set an alarm for 05:45 PM labeled 'Wake Up'" (App: com.sec.android.app.clockpackage)
+Result: [FAIL] | Avg Reward: +0.75
+  Turn 1:
+    Thought:      Inspecting alarm list: Alarm for 05:45 PM does not exist. Clicking Add alarm (+) at [4].
+    Action:       CLICK([4])
+    Expected:     CLICK([4])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 2:
+    Thought:      Entering alarm label 'Wake Up' into the name field at [3].
+    Action:       CLICK([3])
+    Expected:     TYPE([3], "Wake Up")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 3:
+    Thought:      Saving the configured alarm at [4].
+    Action:       CLICK([4])
+    Expected:     CLICK([4])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 4:
+    Thought:      Alarm has been set and verified.
+    Action:       CLICK([2])
+    Expected:     DONE("Set alarm for 05:45 PM labeled Wake Up.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 047: "Send a WhatsApp message to David Miller saying 'I will arrive in 15 minutes.'" (App: com.whatsapp)
+Result: [FAIL] | Avg Reward: +0.62
+  Turn 1:
+    Thought:      David Miller is not in recent chats. Clicking Search button at [2].
+    Action:       CLICK([2])
+    Expected:     CLICK([2])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 2:
+    Thought:      Typing contact name 'David Miller' into search bar [1].
+    Action:       CLICK([1])
+    Expected:     TYPE([1], "David Miller")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 3:
+    Thought:      Found search result for David Miller at [2]. Opening chat.
+    Action:       CLICK([2])
+    Expected:     CLICK([2])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 4:
+    Thought:      Typing the message 'I will arrive in 15 minutes.' into the input box at [4].
+    Action:       CLICK([4])
+    Expected:     TYPE([4], "I will arrive in 15 minutes.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 5:
+    Thought:      Tapping the Send button at [5].
+    Action:       CLICK([5])
+    Expected:     CLICK([5])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 6:
+    Thought:      Message has been sent successfully.
+    Action:       send text to David Miller
+    Expected:     DONE("Sent WhatsApp message to David Miller.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 048: "Set an alarm for 11:00 PM labeled 'Quantum Leap'" (App: com.sec.android.app.clockpackage)
+Result: [FAIL] | Avg Reward: +0.00
+  Turn 1:
+    Thought:      Inspecting alarm list: Alarm for 11:00 PM already exists at index [6] and is active (ON). No duplicate alarm needed.
+    Action:       CLICK([6])
+    Expected:     DONE("Alarm for 11:00 PM is already active.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 049: "Set an alarm for 10:15 AM labeled 'Workout'" (App: com.sec.android.app.clockpackage)
+Result: [FAIL] | Avg Reward: -0.80
+  Turn 1:
+    Thought:      Inspecting alarm list: Alarm for 10:15 AM already exists at index [5] and is active (ON). No duplicate alarm needed.
+    Action:       GET
+    Expected:     DONE("Alarm for 10:15 AM is already active.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 050: "Turn off Wi-Fi" (App: com.android.settings)
+Result: [FAIL] | Avg Reward: +0.35
+  Turn 1:
+    Thought:      Wi-Fi is currently ON. I will toggle switch [1].
+    Action:       CLICK([1])
+    Expected:     CLICK([1])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 2:
+    Thought:      Wi-Fi is now OFF. The task is complete.
+    Action:       Go off Wi-Fi
+    Expected:     DONE("Wi-Fi has been turned OFF.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 051: "Send a WhatsApp message to Emily Watson saying 'I will arrive in 5 minutes.'" (App: com.whatsapp)
+Result: [FAIL] | Avg Reward: +0.23
+  Turn 1:
+    Thought:      The chat with Emily Watson is already open. Typing the message into input box at [4].
+    Action:       CLICK([4])
+    Expected:     TYPE([4], "I will arrive in 5 minutes.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Tapping the Send button at [5].
+    Action:       CLICK([5])
+    Expected:     CLICK([5])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 3:
+    Thought:      Message has been sent successfully.
+    Action:       send ([NS)
+    Expected:     DONE("Sent WhatsApp message to Emily Watson.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 052: "Switch to Dark mode" (App: com.android.settings)
+Result: [FAIL] | Avg Reward: +0.75
+  Turn 1:
+    Thought:      Dark mode is currently OFF. I will toggle switch [4].
+    Action:       CLICK([4])
+    Expected:     CLICK([4])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 2:
+    Thought:      Dark mode is now ON. The task is complete.
+    Action:       CLICK([1])
+    Expected:     DONE("Dark mode has been turned ON.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 053: "Send a WhatsApp message to Elon saying 'I will arrive in 15 minutes.'" (App: com.whatsapp)
+Result: [FAIL] | Avg Reward: -0.03
+  Turn 1:
+    Thought:      I see Elon in the recent chats list at [4]. Opening chat directly.
+    Action:       POST([4])
+    Expected:     CLICK([4])
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Now typing the message 'I will arrive in 15 minutes.' into the input box at [3].
+    Action:       CLICK([3])
+    Expected:     TYPE([3], "I will arrive in 15 minutes.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 3:
+    Thought:      Tapping the Send button at [4].
+    Action:       CLICK([4])
+    Expected:     CLICK([4])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 4:
+    Thought:      Message has been sent successfully.
+    Action:       send [911 message to Elon.")
+    Expected:     DONE("Sent WhatsApp message to Elon.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 054: "Set an alarm for 11:45 PM labeled 'Wake Up'" (App: com.sec.android.app.clockpackage)
+Result: [FAIL] | Avg Reward: +0.00
+  Turn 1:
+    Thought:      Inspecting alarm list: Alarm for 11:45 PM already exists at index [3] and is active (ON). No duplicate alarm needed.
+    Action:       CLICK([3])
+    Expected:     DONE("Alarm for 11:45 PM is already active.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 055: "Send a WhatsApp message to Tech Support saying 'I will arrive in 5 minutes.'" (App: com.whatsapp)
+Result: [FAIL] | Avg Reward: +0.55
+  Turn 1:
+    Thought:      I see Tech Support in the recent chats list at [3]. Opening chat directly.
+    Action:       CLICK([3])
+    Expected:     CLICK([3])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 2:
+    Thought:      Now typing the message 'I will arrive in 5 minutes.' into the input box at [4].
+    Action:       CLICK([4])
+    Expected:     TYPE([4], "I will arrive in 5 minutes.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 3:
+    Thought:      Tapping the Send button at [5].
+    Action:       CLICK([5])
+    Expected:     CLICK([5])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 4:
+    Thought:      Message has been sent successfully.
+    Action:       send [data([data] wrote content
+    Expected:     DONE("Sent WhatsApp message to Tech Support.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 056: "Set an alarm for 11:30 AM labeled 'Client Call'" (App: com.sec.android.app.clockpackage)
+Result: [FAIL] | Avg Reward: -0.80
+  Turn 1:
+    Thought:      Inspecting alarm list: Alarm for 11:30 AM already exists at index [4] and is active (ON). No duplicate alarm needed.
+    Action:       GET
+    Expected:     DONE("Alarm for 11:30 AM is already active.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 057: "Set an alarm for 07:15 PM labeled 'Wake Up'" (App: com.sec.android.app.clockpackage)
+Result: [FAIL] | Avg Reward: +0.75
+  Turn 1:
+    Thought:      Inspecting alarm list: Alarm for 07:15 PM does not exist. Clicking Add alarm (+) at [6].
+    Action:       CLICK([6])
+    Expected:     CLICK([6])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 2:
+    Thought:      Entering alarm label 'Wake Up' into the name field at [3].
+    Action:       CLICK([3])
+    Expected:     TYPE([3], "Wake Up")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 3:
+    Thought:      Saving the configured alarm at [4].
+    Action:       CLICK([4])
+    Expected:     CLICK([4])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 4:
+    Thought:      Alarm has been set and verified.
+    Action:       CLICK([2])
+    Expected:     DONE("Set alarm for 07:15 PM labeled Wake Up.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 058: "Turn off NFC" (App: com.android.settings)
+Result: [FAIL] | Avg Reward: +0.23
+  Turn 1:
+    Thought:      I need to open the Connections settings menu where NFC is located.
+    Action:       CLICK([params)
+    Expected:     CLICK([5])
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      NFC is currently ON. I will toggle switch [4].
+    Action:       CLICK([4])
+    Expected:     CLICK([4])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 3:
+    Thought:      NFC is now OFF. The task is complete.
+    Action:       CLICK([5])
+    Expected:     DONE("NFC has been turned OFF.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 059: "Set an alarm for 09:45 PM labeled 'Project Review'" (App: com.sec.android.app.clockpackage)
+Result: [FAIL] | Avg Reward: -0.40
+  Turn 1:
+    Thought:      Inspecting alarm list: Alarm for 09:45 PM exists at index [6] but is OFF. Toggling switch [6] to enable it without duplicate.
+    Action:       GET
+    Expected:     CLICK([6])
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Alarm for 09:45 PM is now verified as ON on screen. Task complete.
+    Action:       CLICK([6])
+    Expected:     DONE("Alarm for 09:45 PM has been enabled.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 060: "Send a WhatsApp message to Office Manager saying 'Meeting at 10 PM'" (App: com.whatsapp)
+Result: [FAIL] | Avg Reward: -0.03
+  Turn 1:
+    Thought:      I see Office Manager in the recent chats list at [4]. Opening chat directly.
+    Action:       POST([4])
+    Expected:     CLICK([4])
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Now typing the message 'Meeting at 10 PM' into the input box at [4].
+    Action:       CLICK([4])
+    Expected:     TYPE([4], "Meeting at 10 PM")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 3:
+    Thought:      Tapping the Send button at [5].
+    Action:       CLICK([5])
+    Expected:     CLICK([5])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 4:
+    Thought:      Message has been sent successfully.
+    Action:       sendMore [Data
+    Expected:     DONE("Sent WhatsApp message to Office Manager.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 061: "Turn off Bluetooth" (App: com.android.settings)
+Result: [FAIL] | Avg Reward: +0.00
+  Turn 1:
+    Thought:      Inspecting screen: Bluetooth is already OFF at index [5]. No toggle required.
+    Action:       CLICK([5])
+    Expected:     DONE("Bluetooth is already OFF.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 062: "Set an alarm for 09:30 PM labeled 'Deep Work'" (App: com.sec.android.app.clockpackage)
+Result: [FAIL] | Avg Reward: +0.55
+  Turn 1:
+    Thought:      Inspecting alarm list: Alarm for 09:30 PM does not exist. Clicking Add alarm (+) at [5].
+    Action:       CLICK([5])
+    Expected:     CLICK([5])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 2:
+    Thought:      Entering alarm label 'Deep Work' into the name field at [3].
+    Action:       CLICK([3])
+    Expected:     TYPE([3], "Deep Work")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 3:
+    Thought:      Saving the configured alarm at [4].
+    Action:       CLICK([4])
+    Expected:     CLICK([4])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 4:
+    Thought:      Alarm has been set and verified.
+    Action:       CLICK([2:ReadText("Deep Work")
+    Expected:     DONE("Set alarm for 09:30 PM labeled Deep Work.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 063: "Turn on Battery saver" (App: com.android.settings)
+Result: [FAIL] | Avg Reward: +0.00
+  Turn 1:
+    Thought:      Inspecting screen: Battery saver is already ON at index [2]. No toggle required.
+    Action:       CLICK([2])
+    Expected:     DONE("Battery saver is already ON.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 064: "Set an alarm for 06:45 PM labeled 'Quantum Leap'" (App: com.sec.android.app.clockpackage)
+Result: [FAIL] | Avg Reward: +0.75
+  Turn 1:
+    Thought:      Inspecting alarm list: Alarm for 06:45 PM does not exist. Clicking Add alarm (+) at [3].
+    Action:       CLICK([3])
+    Expected:     CLICK([3])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 2:
+    Thought:      Entering alarm label 'Quantum Leap' into the name field at [2].
+    Action:       CLICK([2])
+    Expected:     TYPE([2], "Quantum Leap")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 3:
+    Thought:      Saving the configured alarm at [3].
+    Action:       CLICK([3])
+    Expected:     CLICK([3])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 4:
+    Thought:      Alarm has been set and verified.
+    Action:       CLICK([2])
+    Expected:     DONE("Set alarm for 06:45 PM labeled Quantum Leap.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 065: "Send a WhatsApp message to Dad saying 'I will arrive in 20 minutes.'" (App: com.whatsapp)
+Result: [FAIL] | Avg Reward: -0.03
+  Turn 1:
+    Thought:      I see Dad in the recent chats list at [4]. Opening chat directly.
+    Action:       send([4])
+    Expected:     CLICK([4])
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Now typing the message 'I will arrive in 20 minutes.' into the input box at [4].
+    Action:       CLICK([4])
+    Expected:     TYPE([4], "I will arrive in 20 minutes.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 3:
+    Thought:      Tapping the Send button at [5].
+    Action:       CLICK([5])
+    Expected:     CLICK([5])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 4:
+    Thought:      Message has been sent successfully.
+    Action:       send [911 message to Dad.")
+    Expected:     DONE("Sent WhatsApp message to Dad.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 066: "Send a WhatsApp message to Jessica Taylor saying 'I will arrive in 20 minutes.'" (App: com.whatsapp)
+Result: [FAIL] | Avg Reward: -0.03
+  Turn 1:
+    Thought:      I see Jessica Taylor in the recent chats list at [6]. Opening chat directly.
+    Action:       POST([6])
+    Expected:     CLICK([6])
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Now typing the message 'I will arrive in 20 minutes.' into the input box at [4].
+    Action:       CLICK([4])
+    Expected:     TYPE([4], "I will arrive in 20 minutes.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 3:
+    Thought:      Tapping the Send button at [5].
+    Action:       CLICK([5])
+    Expected:     CLICK([5])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 4:
+    Thought:      Message has been sent successfully.
+    Action:       send ([Chat message)
+    Expected:     DONE("Sent WhatsApp message to Jessica Taylor.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 067: "Send a WhatsApp message to Elon saying 'Meeting at 12 PM'" (App: com.whatsapp)
+Result: [FAIL] | Avg Reward: +0.55
+  Turn 1:
+    Thought:      I see Elon in the recent chats list at [5]. Opening chat directly.
+    Action:       CLICK([5])
+    Expected:     CLICK([5])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 2:
+    Thought:      Now typing the message 'Meeting at 12 PM' into the input box at [3].
+    Action:       CLICK([3])
+    Expected:     TYPE([3], "Meeting at 12 PM")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 3:
+    Thought:      Tapping the Send button at [4].
+    Action:       CLICK([4])
+    Expected:     CLICK([4])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 4:
+    Thought:      Message has been sent successfully.
+    Action:       send([Message is Fully ordered
+    Expected:     DONE("Sent WhatsApp message to Elon.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 068: "Turn off Flight mode" (App: com.android.settings)
+Result: [FAIL] | Avg Reward: +0.50
+  Turn 1:
+    Thought:      I need to open the Connections settings menu where Flight mode is located.
+    Action:       CLICK([1])
+    Expected:     CLICK([4])
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Flight mode is currently ON. I will toggle switch [4].
+    Action:       CLICK([4])
+    Expected:     CLICK([4])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 3:
+    Thought:      Flight mode is now OFF. The task is complete.
+    Action:       CLICK([1])
+    Expected:     DONE("Flight mode has been turned OFF.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 069: "Send a WhatsApp message to John Doe saying 'Meeting at 8 PM'" (App: com.whatsapp)
+Result: [FAIL] | Avg Reward: -0.03
+  Turn 1:
+    Thought:      I see John Doe in the recent chats list at [4]. Opening chat directly.
+    Action:       POST([4])
+    Expected:     CLICK([4])
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Now typing the message 'Meeting at 8 PM' into the input box at [3].
+    Action:       CLICK([3])
+    Expected:     TYPE([3], "Meeting at 8 PM")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 3:
+    Thought:      Tapping the Send button at [4].
+    Action:       CLICK([4])
+    Expected:     CLICK([4])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 4:
+    Thought:      Message has been sent successfully.
+    Action:       send([R")
+    Expected:     DONE("Sent WhatsApp message to John Doe.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 070: "Turn on Location" (App: com.android.settings)
+Result: [FAIL] | Avg Reward: +0.75
+  Turn 1:
+    Thought:      Location is currently OFF. I will toggle switch [1].
+    Action:       CLICK([1])
+    Expected:     CLICK([1])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 2:
+    Thought:      Location is now ON. The task is complete.
+    Action:       CLICK([1])
+    Expected:     DONE("Location has been turned ON.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 071: "Turn off Do not disturb" (App: com.android.settings)
+Result: [FAIL] | Avg Reward: +0.23
+  Turn 1:
+    Thought:      I need to open the Notifications settings menu where Do not disturb is located.
+    Action:       CLICK([7])
+    Expected:     CLICK([5])
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+  Turn 2:
+    Thought:      Do not disturb is currently ON. I will toggle switch [5].
+    Action:       CLICK([5])
+    Expected:     CLICK([5])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 3:
+    Thought:      Do not disturb is now OFF. The task is complete.
+    Action:       Do not disturb is moved on Do not disturb
+    Expected:     DONE("Do not disturb has been turned OFF.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 072: "Disable Mobile Hotspot" (App: com.android.settings)
+Result: [FAIL] | Avg Reward: +0.75
+  Turn 1:
+    Thought:      Mobile Hotspot is currently ON. I will toggle switch [5].
+    Action:       CLICK([5])
+    Expected:     CLICK([5])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 2:
+    Thought:      Mobile Hotspot is now OFF. The task is complete.
+    Action:       CLICK([3])
+    Expected:     DONE("Mobile Hotspot has been turned OFF.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 073: "Set an alarm for 11:30 AM labeled 'Deep Work'" (App: com.sec.android.app.clockpackage)
+Result: [FAIL] | Avg Reward: +0.75
+  Turn 1:
+    Thought:      Inspecting alarm list: Alarm for 11:30 AM does not exist. Clicking Add alarm (+) at [5].
+    Action:       CLICK([5])
+    Expected:     CLICK([5])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 2:
+    Thought:      Entering alarm label 'Deep Work' into the name field at [2].
+    Action:       CLICK([2])
+    Expected:     TYPE([2], "Deep Work")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 3:
+    Thought:      Saving the configured alarm at [3].
+    Action:       CLICK([3])
+    Expected:     CLICK([3])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 4:
+    Thought:      Alarm has been set and verified.
+    Action:       CLICK([2])
+    Expected:     DONE("Set alarm for 11:30 AM labeled Deep Work.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 074: "Turn on Flight mode" (App: com.android.settings)
+Result: [FAIL] | Avg Reward: +0.75
+  Turn 1:
+    Thought:      Flight mode is currently OFF. I will toggle switch [3].
+    Action:       CLICK([3])
+    Expected:     CLICK([3])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 2:
+    Thought:      Flight mode is now ON. The task is complete.
+    Action:       CLICK([1])
+    Expected:     DONE("Flight mode has been turned ON.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 075: "Set an alarm for 09:30 AM labeled 'Quantum Leap'" (App: com.sec.android.app.clockpackage)
+Result: [FAIL] | Avg Reward: +0.75
+  Turn 1:
+    Thought:      Inspecting alarm list: Alarm for 09:30 AM does not exist. Clicking Add alarm (+) at [2].
+    Action:       CLICK([2])
+    Expected:     CLICK([2])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 2:
+    Thought:      Entering alarm label 'Quantum Leap' into the name field at [2].
+    Action:       CLICK([2])
+    Expected:     TYPE([2], "Quantum Leap")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 3:
+    Thought:      Saving the configured alarm at [3].
+    Action:       CLICK([3])
+    Expected:     CLICK([3])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 4:
+    Thought:      Alarm has been set and verified.
+    Action:       CLICK([2])
+    Expected:     DONE("Set alarm for 09:30 AM labeled Quantum Leap.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 076: "Turn off Location" (App: com.android.settings)
+Result: [FAIL] | Avg Reward: +0.00
+  Turn 1:
+    Thought:      Inspecting screen: Location is already OFF at index [5]. No toggle required.
+    Action:       CLICK([5])
+    Expected:     DONE("Location is already OFF.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 077: "Send a WhatsApp message to Robert Downey saying 'I will arrive in 5 minutes.'" (App: com.whatsapp)
+Result: [FAIL] | Avg Reward: +0.23
+  Turn 1:
+    Thought:      The chat with Robert Downey is already open. Typing the message into input box at [4].
+    Action:       CLICK([4])
+    Expected:     TYPE([4], "I will arrive in 5 minutes.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Tapping the Send button at [5].
+    Action:       CLICK([5])
+    Expected:     CLICK([5])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 3:
+    Thought:      Message has been sent successfully.
+    Action:       send([Data])
+    Expected:     DONE("Sent WhatsApp message to Robert Downey.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 078: "Set an alarm for 08:00 PM labeled 'Morning Run'" (App: com.sec.android.app.clockpackage)
+Result: [FAIL] | Avg Reward: -0.40
+  Turn 1:
+    Thought:      Inspecting alarm list: Alarm for 08:00 PM exists at index [4] but is OFF. Toggling switch [4] to enable it without duplicate.
+    Action:       Set alarm for 08:00 PM listed morning Run tomorrow
+    Expected:     CLICK([4])
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Alarm for 08:00 PM is now verified as ON on screen. Task complete.
+    Action:       CLICK([6])
+    Expected:     DONE("Alarm for 08:00 PM has been enabled.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 079: "Send a WhatsApp message to Elon saying 'Meeting at 5 PM'" (App: com.whatsapp)
+Result: [FAIL] | Avg Reward: +0.62
+  Turn 1:
+    Thought:      Elon is not in recent chats. Clicking Search button at [2].
+    Action:       CLICK([2])
+    Expected:     CLICK([2])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 2:
+    Thought:      Typing contact name 'Elon' into search bar [1].
+    Action:       CLICK([1])
+    Expected:     TYPE([1], "Elon")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 3:
+    Thought:      Found search result for Elon at [2]. Opening chat.
+    Action:       CLICK([2])
+    Expected:     CLICK([2])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 4:
+    Thought:      Typing the message 'Meeting at 5 PM' into the input box at [4].
+    Action:       CLICK([4])
+    Expected:     TYPE([4], "Meeting at 5 PM")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 5:
+    Thought:      Tapping the Send button at [5].
+    Action:       CLICK([5])
+    Expected:     CLICK([5])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 6:
+    Thought:      Message has been sent successfully.
+    Action:       getMessages() is successful
+    Expected:     DONE("Sent WhatsApp message to Elon.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 080: "Set an alarm for 06:15 PM labeled 'Wake Up'" (App: com.sec.android.app.clockpackage)
+Result: [FAIL] | Avg Reward: +0.75
+  Turn 1:
+    Thought:      Inspecting alarm list: Alarm for 06:15 PM does not exist. Clicking Add alarm (+) at [5].
+    Action:       CLICK([5])
+    Expected:     CLICK([5])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 2:
+    Thought:      Entering alarm label 'Wake Up' into the name field at [3].
+    Action:       CLICK([3])
+    Expected:     TYPE([3], "Wake Up")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 3:
+    Thought:      Saving the configured alarm at [4].
+    Action:       CLICK([4])
+    Expected:     CLICK([4])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 4:
+    Thought:      Alarm has been set and verified.
+    Action:       CLICK([2])
+    Expected:     DONE("Set alarm for 06:15 PM labeled Wake Up.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 081: "Set an alarm for 06:45 AM labeled 'Dentist'" (App: com.sec.android.app.clockpackage)
+Result: [FAIL] | Avg Reward: -0.40
+  Turn 1:
+    Thought:      Inspecting alarm list: Alarm for 06:45 AM exists at index [4] but is OFF. Toggling switch [4] to enable it without duplicate.
+    Action:       GET
+    Expected:     CLICK([4])
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Alarm for 06:45 AM is now verified as ON on screen. Task complete.
+    Action:       CLICK([4])
+    Expected:     DONE("Alarm for 06:45 AM has been enabled.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 082: "Set an alarm for 11:15 PM labeled 'Wake Up'" (App: com.sec.android.app.clockpackage)
+Result: [FAIL] | Avg Reward: -0.40
+  Turn 1:
+    Thought:      Inspecting alarm list: Alarm for 11:15 PM exists at index [4] but is OFF. Toggling switch [4] to enable it without duplicate.
+    Action:       GET
+    Expected:     CLICK([4])
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Alarm for 11:15 PM is now verified as ON on screen. Task complete.
+    Action:       CLICK([6])
+    Expected:     DONE("Alarm for 11:15 PM has been enabled.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 083: "Set an alarm for 08:45 AM labeled 'Quantum Leap'" (App: com.sec.android.app.clockpackage)
+Result: [FAIL] | Avg Reward: +0.75
+  Turn 1:
+    Thought:      Inspecting alarm list: Alarm for 08:45 AM does not exist. Clicking Add alarm (+) at [3].
+    Action:       CLICK([3])
+    Expected:     CLICK([3])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 2:
+    Thought:      Entering alarm label 'Quantum Leap' into the name field at [2].
+    Action:       CLICK([2])
+    Expected:     TYPE([2], "Quantum Leap")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 3:
+    Thought:      Saving the configured alarm at [3].
+    Action:       CLICK([3])
+    Expected:     CLICK([3])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 4:
+    Thought:      Alarm has been set and verified.
+    Action:       CLICK([2])
+    Expected:     DONE("Set alarm for 08:45 AM labeled Quantum Leap.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 084: "Set an alarm for 09:15 PM labeled 'Flight'" (App: com.sec.android.app.clockpackage)
+Result: [FAIL] | Avg Reward: +0.55
+  Turn 1:
+    Thought:      Inspecting alarm list: Alarm for 09:15 PM does not exist. Clicking Add alarm (+) at [5].
+    Action:       CLICK([5])
+    Expected:     CLICK([5])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 2:
+    Thought:      Entering alarm label 'Flight' into the name field at [2].
+    Action:       CLICK([2])
+    Expected:     TYPE([2], "Flight")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 3:
+    Thought:      Saving the configured alarm at [3].
+    Action:       CLICK([3])
+    Expected:     CLICK([3])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 4:
+    Thought:      Alarm has been set and verified.
+    Action:       CLICK([2:15 PM]
+    Expected:     DONE("Set alarm for 09:15 PM labeled Flight.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 085: "Set an alarm for 07:00 PM labeled 'Project Review'" (App: com.sec.android.app.clockpackage)
+Result: [FAIL] | Avg Reward: -0.80
+  Turn 1:
+    Thought:      Inspecting alarm list: Alarm for 07:00 PM already exists at index [6] and is active (ON). No duplicate alarm needed.
+    Action:       GET
+    Expected:     DONE("Alarm for 07:00 PM is already active.")
+    RL Reward:    -0.80 (Syntax Failure (Invalid Grammar))
+    State Delta:  No State Delta ✗
+--------------------------------------------------------------------------------
+PROMPT 086: "Navigate to Home on Google Maps" (App: com.google.android.apps.maps)
+Result: [FAIL] | Avg Reward: +0.50
+  Turn 1:
+    Thought:      Typing destination 'Home' into search box [1].
+    Action:       CLICK([1])
+    Expected:     TYPE([1], "Home")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Starting navigation by tapping button [3].
+    Action:       CLICK([3])
+    Expected:     CLICK([3])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 3:
+    Thought:      Navigation has started.
+    Action:       CLICK([3])
+    Expected:     DONE("Navigation to Home started.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 087: "Navigate to Home on Google Maps" (App: com.google.android.apps.maps)
+Result: [FAIL] | Avg Reward: +0.50
+  Turn 1:
+    Thought:      Typing destination 'Home' into search box [1].
+    Action:       CLICK([1])
+    Expected:     TYPE([1], "Home")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Starting navigation by tapping button [3].
+    Action:       CLICK([3])
+    Expected:     CLICK([3])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 3:
+    Thought:      Navigation has started.
+    Action:       CLICK([3])
+    Expected:     DONE("Navigation to Home started.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 088: "Navigate to Coffee shop on Google Maps" (App: com.google.android.apps.maps)
+Result: [FAIL] | Avg Reward: +0.50
+  Turn 1:
+    Thought:      Typing destination 'Coffee shop' into search box [1].
+    Action:       CLICK([1])
+    Expected:     TYPE([1], "Coffee shop")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Starting navigation by tapping button [3].
+    Action:       CLICK([3])
+    Expected:     CLICK([3])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 3:
+    Thought:      Navigation has started.
+    Action:       CLICK([1])
+    Expected:     DONE("Navigation to Coffee shop started.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 089: "Navigate to Central Hospital on Google Maps" (App: com.google.android.apps.maps)
+Result: [FAIL] | Avg Reward: +0.50
+  Turn 1:
+    Thought:      Typing destination 'Central Hospital' into search box [1].
+    Action:       CLICK([1])
+    Expected:     TYPE([1], "Central Hospital")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Starting navigation by tapping button [3].
+    Action:       CLICK([3])
+    Expected:     CLICK([3])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 3:
+    Thought:      Navigation has started.
+    Action:       CLICK([1])
+    Expected:     DONE("Navigation to Central Hospital started.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 090: "Navigate to Home on Google Maps" (App: com.google.android.apps.maps)
+Result: [FAIL] | Avg Reward: +0.50
+  Turn 1:
+    Thought:      Typing destination 'Home' into search box [1].
+    Action:       CLICK([1])
+    Expected:     TYPE([1], "Home")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Starting navigation by tapping button [3].
+    Action:       CLICK([3])
+    Expected:     CLICK([3])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 3:
+    Thought:      Navigation has started.
+    Action:       CLICK([3])
+    Expected:     DONE("Navigation to Home started.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 091: "Navigate to Nearest pharmacy on Google Maps" (App: com.google.android.apps.maps)
+Result: [FAIL] | Avg Reward: +0.50
+  Turn 1:
+    Thought:      Typing destination 'Nearest pharmacy' into search box [1].
+    Action:       CLICK([1])
+    Expected:     TYPE([1], "Nearest pharmacy")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Starting navigation by tapping button [3].
+    Action:       CLICK([3])
+    Expected:     CLICK([3])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 3:
+    Thought:      Navigation has started.
+    Action:       CLICK([1])
+    Expected:     DONE("Navigation to Nearest pharmacy started.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 092: "Navigate to Work on Google Maps" (App: com.google.android.apps.maps)
+Result: [FAIL] | Avg Reward: +0.50
+  Turn 1:
+    Thought:      Typing destination 'Work' into search box [1].
+    Action:       CLICK([1])
+    Expected:     TYPE([1], "Work")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Starting navigation by tapping button [3].
+    Action:       CLICK([3])
+    Expected:     CLICK([3])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 3:
+    Thought:      Navigation has started.
+    Action:       CLICK([3])
+    Expected:     DONE("Navigation to Work started.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 093: "Navigate to Home on Google Maps" (App: com.google.android.apps.maps)
+Result: [FAIL] | Avg Reward: +0.50
+  Turn 1:
+    Thought:      Typing destination 'Home' into search box [1].
+    Action:       CLICK([1])
+    Expected:     TYPE([1], "Home")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Starting navigation by tapping button [3].
+    Action:       CLICK([3])
+    Expected:     CLICK([3])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 3:
+    Thought:      Navigation has started.
+    Action:       CLICK([3])
+    Expected:     DONE("Navigation to Home started.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 094: "Navigate to Airport on Google Maps" (App: com.google.android.apps.maps)
+Result: [FAIL] | Avg Reward: +0.50
+  Turn 1:
+    Thought:      Typing destination 'Airport' into search box [1].
+    Action:       CLICK([1])
+    Expected:     TYPE([1], "Airport")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Starting navigation by tapping button [3].
+    Action:       CLICK([3])
+    Expected:     CLICK([3])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 3:
+    Thought:      Navigation has started.
+    Action:       CLICK([3])
+    Expected:     DONE("Navigation to Airport started.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 095: "Navigate to Nearest pharmacy on Google Maps" (App: com.google.android.apps.maps)
+Result: [FAIL] | Avg Reward: +0.50
+  Turn 1:
+    Thought:      Typing destination 'Nearest pharmacy' into search box [1].
+    Action:       CLICK([1])
+    Expected:     TYPE([1], "Nearest pharmacy")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Starting navigation by tapping button [3].
+    Action:       CLICK([3])
+    Expected:     CLICK([3])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 3:
+    Thought:      Navigation has started.
+    Action:       CLICK([1])
+    Expected:     DONE("Navigation to Nearest pharmacy started.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 096: "Navigate to Nearest pharmacy on Google Maps" (App: com.google.android.apps.maps)
+Result: [FAIL] | Avg Reward: +0.50
+  Turn 1:
+    Thought:      Typing destination 'Nearest pharmacy' into search box [1].
+    Action:       CLICK([1])
+    Expected:     TYPE([1], "Nearest pharmacy")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Starting navigation by tapping button [3].
+    Action:       CLICK([3])
+    Expected:     CLICK([3])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 3:
+    Thought:      Navigation has started.
+    Action:       CLICK([1])
+    Expected:     DONE("Navigation to Nearest pharmacy started.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 097: "Navigate to Work on Google Maps" (App: com.google.android.apps.maps)
+Result: [FAIL] | Avg Reward: +0.50
+  Turn 1:
+    Thought:      Typing destination 'Work' into search box [1].
+    Action:       CLICK([1])
+    Expected:     TYPE([1], "Work")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Starting navigation by tapping button [3].
+    Action:       CLICK([3])
+    Expected:     CLICK([3])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 3:
+    Thought:      Navigation has started.
+    Action:       CLICK([3])
+    Expected:     DONE("Navigation to Work started.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 098: "Navigate to Airport on Google Maps" (App: com.google.android.apps.maps)
+Result: [FAIL] | Avg Reward: +0.50
+  Turn 1:
+    Thought:      Typing destination 'Airport' into search box [1].
+    Action:       CLICK([1])
+    Expected:     TYPE([1], "Airport")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Starting navigation by tapping button [3].
+    Action:       CLICK([3])
+    Expected:     CLICK([3])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 3:
+    Thought:      Navigation has started.
+    Action:       CLICK([3])
+    Expected:     DONE("Navigation to Airport started.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 099: "Navigate to Work on Google Maps" (App: com.google.android.apps.maps)
+Result: [FAIL] | Avg Reward: +0.50
+  Turn 1:
+    Thought:      Typing destination 'Work' into search box [1].
+    Action:       CLICK([1])
+    Expected:     TYPE([1], "Work")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Starting navigation by tapping button [3].
+    Action:       CLICK([3])
+    Expected:     CLICK([3])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 3:
+    Thought:      Navigation has started.
+    Action:       CLICK([3])
+    Expected:     DONE("Navigation to Work started.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+PROMPT 100: "Navigate to Work on Google Maps" (App: com.google.android.apps.maps)
+Result: [FAIL] | Avg Reward: +0.50
+  Turn 1:
+    Thought:      Typing destination 'Work' into search box [1].
+    Action:       CLICK([1])
+    Expected:     TYPE([1], "Work")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  No State Delta ✗
+  Turn 2:
+    Thought:      Starting navigation by tapping button [3].
+    Action:       CLICK([3])
+    Expected:     CLICK([3])
+    RL Reward:    +1.50 (Optimal Transition (+1.50 Max))
+    State Delta:  State Mutated ✓
+  Turn 3:
+    Thought:      Navigation has started.
+    Action:       CLICK([3])
+    Expected:     DONE("Navigation to Work started.")
+    RL Reward:    +0.00 (Wrong Action Transition (-0.50))
+    State Delta:  State Mutated ✓
+--------------------------------------------------------------------------------
+{
+  "total_prompts": 100,
+  "total_turns": 278,
+  "passed_turns": 96,
+  "pass_rate_percent": 34.53,
+  "state_changes_verified": 157,
+  "state_delta_rate_percent": 56.47,
+  "average_rl_reward": 0.342,
+  "reward_scale": "[-0.80 min to +1.50 max]"
+}

@@ -188,3 +188,4 @@ adb shell "chmod 755 /data/local/tmp/embeddra_cli && /data/local/tmp/embeddra_cl
 ## 📄 License
 
 This project is licensed under the Apache License 2.0.
+

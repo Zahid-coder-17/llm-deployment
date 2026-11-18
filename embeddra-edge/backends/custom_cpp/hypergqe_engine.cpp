@@ -1,3 +1,4 @@
+#include <unordered_set>
 #include "hypergqe_engine.h"
 #include <cmath>
 #include <cstring>
@@ -7,6 +8,8 @@
 #include <fstream>
 #include <vector>
 #include <thread>
+#include <mutex>
+#include <condition_variable>
 
 #if defined(__ARM_NEON) || defined(__aarch64__)
 #include <arm_neon.h>
@@ -30,6 +33,8 @@ namespace embeddra {
 namespace backend {
 
 static inline float silu(float x) {
+    if (x <= -12.0f) return 0.0f;
+    if (x >= 12.0f) return x;
     return x / (1.0f + std::exp(-x));
 }
 
@@ -83,6 +88,12 @@ void HyperGQEEngine::initBuffers() {
     ffn_act_.resize(config_.intermediate_size, 0.0f);
     ffn_out_.resize(config_.hidden_size, 0.0f);
     logits_.resize(config_.vocab_size, 0.0f);
+    q_group_buf_.resize(config_.num_kv_heads * config_.head_dim, 0.0f);
+    q_aux_buf_.resize(2 * config_.head_dim, 0.0f);
+    cat_heads_buf_.resize(768, 0.0f);
+    attn_scores_buf_.resize(config_.max_seq_len, 0.0f);
+    w_d_buf_.resize(config_.hidden_size * 16, 0.0f);
+    w_u_buf_.resize(16 * config_.head_dim, 0.0f);
 
     mem_pool_ = std::make_unique<memory::MemoryPool>(64 * 1024 * 1024);
     kv_cache_ = std::make_unique<memory::KVCacheBuffer>(
@@ -99,6 +110,8 @@ void HyperGQEEngine::initBuffers() {
     } else {
         LOG_EER("HyperGQEEngine: GPU not available, falling back to CPU execution.");
     }
+    // Use high-throughput persistent work-stealing ARM NEON pool by default to avoid OpenCL sync stalls
+    backend_mode_ = BACKEND_CPU_8CORE;
 }
 
 bool HyperGQEEngine::isGPUActive() const {
@@ -155,6 +168,7 @@ bool HyperGQEEngine::loadModel(const std::string& model_path) {
             if (test_alt.good()) path_to_open = alt;
         }
     }
+    LOG_EER("HyperGQEEngine: Loading model from %s", path_to_open.c_str());
 
 #if defined(__linux__) || defined(__ANDROID__)
     fd_ = open(path_to_open.c_str(), O_RDONLY);
@@ -263,6 +277,15 @@ bool HyperGQEEngine::loadModel(const std::string& model_path) {
         lp.k_proj_w = static_cast<const uint16_t*>(get_ptr("attn.k_proj.weight"));
         lp.v_proj_w = static_cast<const uint16_t*>(get_ptr("attn.v_proj.weight"));
         lp.router_w = static_cast<const uint16_t*>(get_ptr("attn.router.weight"));
+        lp.expert_emb = static_cast<const uint16_t*>(get_ptr("attn.expert_embeddings"));
+        lp.sel_mlp_0_w = static_cast<const uint16_t*>(get_ptr("attn.selection_mlp.0.weight"));
+        lp.sel_mlp_0_b = static_cast<const uint16_t*>(get_ptr("attn.selection_mlp.0.bias"));
+        lp.sel_mlp_2_w = static_cast<const uint16_t*>(get_ptr("attn.selection_mlp.2.weight"));
+        lp.sel_mlp_2_b = static_cast<const uint16_t*>(get_ptr("attn.selection_mlp.2.bias"));
+        lp.hyper_w_d = static_cast<const uint16_t*>(get_ptr("attn.hyper_W_D.weight"));
+        lp.hyper_w_d_b = static_cast<const uint16_t*>(get_ptr("attn.hyper_W_D.bias"));
+        lp.hyper_w_u = static_cast<const uint16_t*>(get_ptr("attn.hyper_W_U.weight"));
+        lp.hyper_w_u_b = static_cast<const uint16_t*>(get_ptr("attn.hyper_W_U.bias"));
         lp.q_shared_w = static_cast<const uint16_t*>(get_ptr("attn.q_shared.weight"));
         lp.o_proj_w = static_cast<const uint16_t*>(get_ptr("attn.o_proj.weight"));
 
@@ -357,62 +380,199 @@ void HyperGQEEngine::computeRoPE(float* q, float* k, int pos, int num_q_heads, i
     }
 }
 
-// 8-Core Parallel GEMV with ARM NEON FP16 acceleration
-static void gemv_fp16_neon_8cores(float* out, const uint16_t* weight, const float* in, int M, int N) {
-    const int num_threads = 8;
-    const int chunk = (M + num_threads - 1) / num_threads;
-
-    auto worker = [=](int start_r, int end_r) {
-        for (int r = start_r; r < end_r; ++r) {
-            const uint16_t* row = weight + (size_t)r * N;
+static void gemv_neon_rows(float* out, const uint16_t* weight, const float* in, int start_r, int end_r, int N) {
 #if defined(__ARM_NEON) || defined(__aarch64__)
-            float32x4_t sum_vec0 = vdupq_n_f32(0.0f);
-            float32x4_t sum_vec1 = vdupq_n_f32(0.0f);
+    int r = start_r;
+    int end_r2 = start_r + ((end_r - start_r) & ~1);
+    for (; r < end_r2; r += 2) {
+        const uint16_t* row0 = weight + (size_t)r * N;
+        const uint16_t* row1 = weight + (size_t)(r + 1) * N;
 
-            int c = 0;
-            int N8 = N & ~7;
-            for (; c < N8; c += 8) {
-                float16x8_t w16 = vld1q_f16(reinterpret_cast<const float16_t*>(row + c));
-                float32x4_t w32_lo = vcvt_f32_f16(vget_low_f16(w16));
-                float32x4_t w32_hi = vcvt_f32_f16(vget_high_f16(w16));
+        float32x4_t sum0_r0 = vdupq_n_f32(0.0f);
+        float32x4_t sum1_r0 = vdupq_n_f32(0.0f);
+        float32x4_t sum0_r1 = vdupq_n_f32(0.0f);
+        float32x4_t sum1_r1 = vdupq_n_f32(0.0f);
 
-                float32x4_t in_lo = vld1q_f32(in + c);
-                float32x4_t in_hi = vld1q_f32(in + c + 4);
+        int c = 0;
+        int N8 = N & ~7;
+        for (; c < N8; c += 8) {
+            __builtin_prefetch(row0 + c + 64, 0, 0);
+            __builtin_prefetch(row1 + c + 64, 0, 0);
 
-                sum_vec0 = vmlaq_f32(sum_vec0, w32_lo, in_lo);
-                sum_vec1 = vmlaq_f32(sum_vec1, w32_hi, in_hi);
-            }
+            float16x8_t w16_0 = vld1q_f16(reinterpret_cast<const float16_t*>(row0 + c));
+            float16x8_t w16_1 = vld1q_f16(reinterpret_cast<const float16_t*>(row1 + c));
 
-            float32x4_t total_vec = vaddq_f32(sum_vec0, sum_vec1);
-            float sum = vaddvq_f32(total_vec);
+            float32x4_t w32_lo_0 = vcvt_f32_f16(vget_low_f16(w16_0));
+            float32x4_t w32_hi_0 = vcvt_f32_f16(vget_high_f16(w16_0));
+            float32x4_t w32_lo_1 = vcvt_f32_f16(vget_low_f16(w16_1));
+            float32x4_t w32_hi_1 = vcvt_f32_f16(vget_high_f16(w16_1));
 
-            for (; c < N; ++c) {
-                sum += fp16_to_fp32(row[c]) * in[c];
-            }
-            out[r] = sum;
+            float32x4_t in_lo = vld1q_f32(in + c);
+            float32x4_t in_hi = vld1q_f32(in + c + 4);
+
+            sum0_r0 = vmlaq_f32(sum0_r0, w32_lo_0, in_lo);
+            sum1_r0 = vmlaq_f32(sum1_r0, w32_hi_0, in_hi);
+
+            sum0_r1 = vmlaq_f32(sum0_r1, w32_lo_1, in_lo);
+            sum1_r1 = vmlaq_f32(sum1_r1, w32_hi_1, in_hi);
+        }
+
+        float32x4_t total_vec0 = vaddq_f32(sum0_r0, sum1_r0);
+        float32x4_t total_vec1 = vaddq_f32(sum0_r1, sum1_r1);
+        float sum_r0 = vaddvq_f32(total_vec0);
+        float sum_r1 = vaddvq_f32(total_vec1);
+
+        for (; c < N; ++c) {
+            float in_c = in[c];
+            sum_r0 += fp16_to_fp32(row0[c]) * in_c;
+            sum_r1 += fp16_to_fp32(row1[c]) * in_c;
+        }
+        out[r] = sum_r0;
+        out[r + 1] = sum_r1;
+    }
+
+    for (; r < end_r; ++r) {
+        const uint16_t* row = weight + (size_t)r * N;
+        float32x4_t sum_vec0 = vdupq_n_f32(0.0f);
+        float32x4_t sum_vec1 = vdupq_n_f32(0.0f);
+
+        int c = 0;
+        int N8 = N & ~7;
+        for (; c < N8; c += 8) {
+            float16x8_t w16 = vld1q_f16(reinterpret_cast<const float16_t*>(row + c));
+            float32x4_t w32_lo = vcvt_f32_f16(vget_low_f16(w16));
+            float32x4_t w32_hi = vcvt_f32_f16(vget_high_f16(w16));
+
+            float32x4_t in_lo = vld1q_f32(in + c);
+            float32x4_t in_hi = vld1q_f32(in + c + 4);
+
+            sum_vec0 = vmlaq_f32(sum_vec0, w32_lo, in_lo);
+            sum_vec1 = vmlaq_f32(sum_vec1, w32_hi, in_hi);
+        }
+
+        float32x4_t total_vec = vaddq_f32(sum_vec0, sum_vec1);
+        float sum = vaddvq_f32(total_vec);
+
+        for (; c < N; ++c) {
+            sum += fp16_to_fp32(row[c]) * in[c];
+        }
+        out[r] = sum;
+    }
 #else
-            float sum = 0.0f;
-            for (int c = 0; c < N; ++c) {
-                sum += fp16_to_fp32(row[c]) * in[c];
-            }
-            out[r] = sum;
+    for (int r = start_r; r < end_r; ++r) {
+        const uint16_t* row = weight + (size_t)r * N;
+        float sum = 0.0f;
+        for (int c = 0; c < N; ++c) {
+            sum += fp16_to_fp32(row[c]) * in[c];
+        }
+        out[r] = sum;
+    }
 #endif
-        }
-    };
-
-    std::vector<std::thread> threads;
-    threads.reserve(num_threads);
-    for (int t = 0; t < num_threads; ++t) {
-        int start_r = t * chunk;
-        int end_r = std::min(start_r + chunk, M);
-        if (start_r < end_r) {
-            threads.emplace_back(worker, start_r, end_r);
-        }
-    }
-    for (auto& th : threads) {
-        th.join();
-    }
 }
+
+class PersistentGemvPool {
+public:
+    static PersistentGemvPool& instance() {
+        static PersistentGemvPool pool(4);
+        return pool;
+    }
+
+    void run(float* out, const uint16_t* weight, const float* in, int M, int N) {
+        if (M < 256) {
+            gemv_neon_rows(out, weight, in, 0, M, N);
+            return;
+        }
+        {
+            std::lock_guard<std::mutex> lock(mtx_);
+            out_ = out;
+            weight_ = weight;
+            in_ = in;
+            M_ = M;
+            N_ = N;
+            active_workers_ = num_threads_ - 1;
+            generation_++;
+        }
+        cv_start_.notify_all();
+
+        // Main thread executes slice 0 directly (zero overhead)
+        int rows_per_worker = (M + num_threads_ - 1) / num_threads_;
+        int end0 = std::min(rows_per_worker, M);
+        gemv_neon_rows(out, weight, in, 0, end0, N);
+
+        std::unique_lock<std::mutex> lock(mtx_);
+        cv_done_.wait(lock, [this]() { return active_workers_ == 0; });
+    }
+
+private:
+    explicit PersistentGemvPool(int num_workers) : num_threads_(num_workers) {
+        workers_.reserve(num_threads_ - 1);
+        for (int i = 1; i < num_threads_; ++i) {
+            workers_.emplace_back([this, i]() { workerLoop(i); });
+        }
+    }
+
+    ~PersistentGemvPool() {
+        {
+            std::lock_guard<std::mutex> lock(mtx_);
+            stop_ = true;
+            generation_++;
+        }
+        cv_start_.notify_all();
+        for (auto& t : workers_) {
+            if (t.joinable()) t.join();
+        }
+    }
+
+    void workerLoop(int thread_idx) {
+        uint64_t my_gen = 0;
+        while (true) {
+            float* my_out = nullptr;
+            const uint16_t* my_weight = nullptr;
+            const float* my_in = nullptr;
+            int my_M = 0;
+            int my_N = 0;
+            {
+                std::unique_lock<std::mutex> lock(mtx_);
+                cv_start_.wait(lock, [this, my_gen]() { return stop_ || generation_ != my_gen; });
+                if (stop_) return;
+                my_gen = generation_;
+                my_out = out_;
+                my_weight = weight_;
+                my_in = in_;
+                my_M = M_;
+                my_N = N_;
+            }
+
+            int rows_per_worker = (my_M + num_threads_ - 1) / num_threads_;
+            int start = thread_idx * rows_per_worker;
+            int end = std::min(start + rows_per_worker, my_M);
+            if (start < my_M) {
+                gemv_neon_rows(my_out, my_weight, my_in, start, end, my_N);
+            }
+
+            {
+                std::lock_guard<std::mutex> lock(mtx_);
+                if (--active_workers_ == 0) {
+                    cv_done_.notify_one();
+                }
+            }
+        }
+    }
+
+    int num_threads_;
+    std::vector<std::thread> workers_;
+    std::mutex mtx_;
+    std::condition_variable cv_start_;
+    std::condition_variable cv_done_;
+    bool stop_ = false;
+    uint64_t generation_ = 0;
+    int active_workers_ = 0;
+    float* out_ = nullptr;
+    const uint16_t* weight_ = nullptr;
+    const float* in_ = nullptr;
+    int M_ = 0;
+    int N_ = 0;
+};
 
 // Matrix-Vector Multiplication: out [M] = W [M, N] * in [N]
 void HyperGQEEngine::gemv_fp16(float* out, const uint16_t* weight, const float* in, int M, int N) {
@@ -433,11 +593,11 @@ void HyperGQEEngine::gemv_fp16(float* out, const uint16_t* weight, const float* 
         }
     }
 
-    // 8-Core CPU ARM NEON execution
-    gemv_fp16_neon_8cores(out, weight, in, M, N);
+    // Persistent work-stealing ARM NEON execution (zero thread spawn overhead)
+    PersistentGemvPool::instance().run(out, weight, in, M, N);
 }
 
-const float* HyperGQEEngine::forward(int token_id, int pos) {
+const float* HyperGQEEngine::forward(int token_id, int pos, bool compute_logits) {
     if (!is_loaded_) return nullptr;
 
     // 1. Embedding lookup
@@ -470,7 +630,8 @@ const float* HyperGQEEngine::forward(int token_id, int pos) {
         }
 
         // 2. Blend Q experts per group (4 groups, 4 experts each)
-        std::vector<float> q_group(4 * config_.head_dim, 0.0f);
+        std::fill(q_group_buf_.begin(), q_group_buf_.end(), 0.0f);
+        float rw[16] = {0.0f};
         for (int g = 0; g < config_.num_kv_heads; ++g) {
             float max_r = router_logits_[g * 4];
             for (int e = 1; e < 4; ++e) {
@@ -484,24 +645,77 @@ const float* HyperGQEEngine::forward(int token_id, int pos) {
             }
             for (int e = 0; e < 4; ++e) {
                 float weight = r_exp[e] / sum_r;
+                rw[g * 4 + e] = weight;
                 const float* q_expert = q_state_.data() + (g * 4 + e) * config_.head_dim;
-                float* q_dest = q_group.data() + g * config_.head_dim;
+                float* q_dest = q_group_buf_.data() + g * config_.head_dim;
                 for (int d = 0; d < config_.head_dim; ++d) {
                     q_dest[d] += weight * q_expert[d];
                 }
             }
         }
 
-        // 3. Aux Query: shared query head (128) + dynamic head (128) -> 2 heads
-        std::vector<float> q_aux(2 * config_.head_dim, 0.0f);
+        // 3. Aux Query: shared query head (128) + dynamic hypernetwork head (128) -> 2 heads
+        std::fill(q_aux_buf_.begin(), q_aux_buf_.end(), 0.0f);
         if (lp.q_shared_w) {
-            gemv_fp16(q_aux.data(), lp.q_shared_w, norm_state_.data(), config_.head_dim, config_.hidden_size);
+            gemv_fp16(q_aux_buf_.data(), lp.q_shared_w, norm_state_.data(), config_.head_dim, config_.hidden_size);
         }
-        std::memcpy(q_aux.data() + config_.head_dim, q_aux.data(), config_.head_dim * sizeof(float));
+        if (lp.expert_emb && lp.sel_mlp_0_w && lp.sel_mlp_2_w && lp.hyper_w_d && lp.hyper_w_u) {
+            float context_vec[64] = {0.0f};
+            for (int g = 0; g < 4; ++g) {
+                for (int e = 0; e < 4; ++e) {
+                    float w = rw[g * 4 + e] * 0.25f;
+                    const uint16_t* emb = lp.expert_emb + (g * 4 + e) * 64;
+                    for (int d = 0; d < 64; ++d) {
+                        context_vec[d] += w * fp16_to_fp32(emb[d]);
+                    }
+                }
+            }
+            float sel_h[128];
+            gemv_fp16(sel_h, lp.sel_mlp_0_w, context_vec, 128, 64);
+            for (int i = 0; i < 128; ++i) {
+                float v = sel_h[i] + (lp.sel_mlp_0_b ? fp16_to_fp32(lp.sel_mlp_0_b[i]) : 0.0f);
+                sel_h[i] = v / (1.0f + std::exp(-v)); // SiLU
+            }
+            float sel[64];
+            gemv_fp16(sel, lp.sel_mlp_2_w, sel_h, 64, 128);
+            if (lp.sel_mlp_2_b) {
+                for (int i = 0; i < 64; ++i) sel[i] += fp16_to_fp32(lp.sel_mlp_2_b[i]);
+            }
+
+            const int wd_rows = config_.hidden_size * 16;
+            gemv_fp16(w_d_buf_.data(), lp.hyper_w_d, sel, wd_rows, 64);
+            if (lp.hyper_w_d_b) {
+                for (int i = 0; i < wd_rows; ++i) w_d_buf_[i] += fp16_to_fp32(lp.hyper_w_d_b[i]);
+            }
+            const int wu_rows = 16 * config_.head_dim;
+            gemv_fp16(w_u_buf_.data(), lp.hyper_w_u, sel, wu_rows, 64);
+            if (lp.hyper_w_u_b) {
+                for (int i = 0; i < wu_rows; ++i) w_u_buf_[i] += fp16_to_fp32(lp.hyper_w_u_b[i]);
+            }
+
+            float h_mid[16] = {0.0f};
+            for (int c = 0; c < config_.hidden_size; ++c) {
+                float xc = norm_state_[c];
+                const float* wd_row = w_d_buf_.data() + c * 16;
+                for (int r = 0; r < 16; ++r) {
+                    h_mid[r] += xc * wd_row[r];
+                }
+            }
+            float* q_dyn = q_aux_buf_.data() + config_.head_dim;
+            for (int r = 0; r < 16; ++r) {
+                float hr = h_mid[r];
+                const float* wu_row = w_u_buf_.data() + r * config_.head_dim;
+                for (int d = 0; d < config_.head_dim; ++d) {
+                    q_dyn[d] += hr * wu_row[d];
+                }
+            }
+        } else {
+            std::memcpy(q_aux_buf_.data() + config_.head_dim, q_aux_buf_.data(), config_.head_dim * sizeof(float));
+        }
 
         // 4. RoPE Positional Encoding
-        computeRoPE(q_group.data(), k_state_.data(), pos, config_.num_kv_heads, config_.num_kv_heads, config_.head_dim);
-        computeRoPE(q_aux.data(), nullptr, pos, 2, 0, config_.head_dim);
+        computeRoPE(q_group_buf_.data(), k_state_.data(), pos, config_.num_kv_heads, config_.num_kv_heads, config_.head_dim);
+        computeRoPE(q_aux_buf_.data(), nullptr, pos, 2, 0, config_.head_dim);
 
         // 5. Store K, V into KV Cache at pos
         if (kv_cache_) {
@@ -515,21 +729,35 @@ const float* HyperGQEEngine::forward(int token_id, int pos) {
 
         // 6. Scaled Dot-Product Attention over cache [0 .. pos]
         float scale = 1.0f / std::sqrt(static_cast<float>(config_.head_dim));
-        int total_len = pos + 1;
-        std::vector<float> cat_heads(768, 0.0f); // 4 group heads (512) + 2 aux heads (256) = 768
+        int total_len = std::min(pos + 1, config_.max_seq_len);
+        std::fill(cat_heads_buf_.begin(), cat_heads_buf_.end(), 0.0f);
 
         // Group heads attention: 4 heads
         for (int g = 0; g < config_.num_kv_heads; ++g) {
-            const float* q_h = q_group.data() + g * config_.head_dim;
-            std::vector<float> scores(total_len);
+            const float* q_h = q_group_buf_.data() + g * config_.head_dim;
+            float* scores = attn_scores_buf_.data();
             float max_s = -1e9f;
 
             for (int t = 0; t < total_len; ++t) {
                 const float* k_t = kv_cache_ ? kv_cache_->get_k(l, g, t) : (k_state_.data() + g * config_.head_dim);
+#if defined(__ARM_NEON) || defined(__aarch64__)
+                float32x4_t d0 = vdupq_n_f32(0.0f);
+                float32x4_t d1 = vdupq_n_f32(0.0f);
+                for (int d = 0; d < config_.head_dim; d += 8) {
+                    float32x4_t q_lo = vld1q_f32(q_h + d);
+                    float32x4_t q_hi = vld1q_f32(q_h + d + 4);
+                    float32x4_t k_lo = vld1q_f32(k_t + d);
+                    float32x4_t k_hi = vld1q_f32(k_t + d + 4);
+                    d0 = vmlaq_f32(d0, q_lo, k_lo);
+                    d1 = vmlaq_f32(d1, q_hi, k_hi);
+                }
+                float dot = vaddvq_f32(vaddq_f32(d0, d1));
+#else
                 float dot = 0.0f;
                 for (int d = 0; d < config_.head_dim; ++d) {
                     dot += q_h[d] * k_t[d];
                 }
+#endif
                 scores[t] = dot * scale;
                 if (scores[t] > max_s) max_s = scores[t];
             }
@@ -541,20 +769,32 @@ const float* HyperGQEEngine::forward(int token_id, int pos) {
             }
             float inv_sum = 1.0f / (sum_exp > 0.0f ? sum_exp : 1.0f);
 
-            float* out_h = cat_heads.data() + g * config_.head_dim;
+            float* out_h = cat_heads_buf_.data() + g * config_.head_dim;
             for (int t = 0; t < total_len; ++t) {
                 float a = scores[t] * inv_sum;
                 const float* v_t = kv_cache_ ? kv_cache_->get_v(l, g, t) : (v_state_.data() + g * config_.head_dim);
+#if defined(__ARM_NEON) || defined(__aarch64__)
+                float32x4_t a_vec = vdupq_n_f32(a);
+                for (int d = 0; d < config_.head_dim; d += 8) {
+                    float32x4_t o_lo = vld1q_f32(out_h + d);
+                    float32x4_t o_hi = vld1q_f32(out_h + d + 4);
+                    float32x4_t v_lo = vld1q_f32(v_t + d);
+                    float32x4_t v_hi = vld1q_f32(v_t + d + 4);
+                    vst1q_f32(out_h + d, vmlaq_f32(o_lo, a_vec, v_lo));
+                    vst1q_f32(out_h + d + 4, vmlaq_f32(o_hi, a_vec, v_hi));
+                }
+#else
                 for (int d = 0; d < config_.head_dim; ++d) {
                     out_h[d] += a * v_t[d];
                 }
+#endif
             }
         }
 
         // Aux heads attention: 2 heads (attend to mean-pooled KV)
         for (int a = 0; a < 2; ++a) {
-            const float* q_h = q_aux.data() + a * config_.head_dim;
-            std::vector<float> scores(total_len);
+            const float* q_h = q_aux_buf_.data() + a * config_.head_dim;
+            float* scores = attn_scores_buf_.data();
             float max_s = -1e9f;
 
             for (int t = 0; t < total_len; ++t) {
@@ -580,7 +820,7 @@ const float* HyperGQEEngine::forward(int token_id, int pos) {
             }
             float inv_sum = 1.0f / (sum_exp > 0.0f ? sum_exp : 1.0f);
 
-            float* out_h = cat_heads.data() + 512 + a * config_.head_dim;
+            float* out_h = cat_heads_buf_.data() + 512 + a * config_.head_dim;
             for (int t = 0; t < total_len; ++t) {
                 float alpha = scores[t] * inv_sum;
                 for (int d = 0; d < config_.head_dim; ++d) {
@@ -597,7 +837,7 @@ const float* HyperGQEEngine::forward(int token_id, int pos) {
         }
 
         // 7. Output projection (768 -> 2048)
-        gemv_fp16(attn_out_.data(), lp.o_proj_w, cat_heads.data(), config_.hidden_size, 768);
+        gemv_fp16(attn_out_.data(), lp.o_proj_w, cat_heads_buf_.data(), config_.hidden_size, 768);
 
         // 8. Residual Add
         for (int i = 0; i < config_.hidden_size; ++i) {
@@ -624,16 +864,19 @@ const float* HyperGQEEngine::forward(int token_id, int pos) {
         }
     }
 
-    // 3. Final RMSNorm
-    computeRMSNorm(norm_state_.data(), hidden_state_.data(), final_norm_weight_, config_.hidden_size, config_.rms_norm_eps);
-
-    // 4. LM Head Projection to vocabulary logits (tied to embed_weight)
-    if (embed_weight_) {
-        gemv_fp16(logits_.data(), embed_weight_, norm_state_.data(), config_.vocab_size, config_.hidden_size);
-    }
-
     if (kv_cache_) {
         kv_cache_->current_len = pos + 1;
+    }
+
+    // 3 & 4. Skip expensive 128k LM head on non-final prefill tokens
+    if (!compute_logits) {
+        return logits_.data();
+    }
+
+    computeRMSNorm(norm_state_.data(), hidden_state_.data(), final_norm_weight_, config_.hidden_size, config_.rms_norm_eps);
+
+    if (embed_weight_) {
+        gemv_fp16(logits_.data(), embed_weight_, norm_state_.data(), config_.vocab_size, config_.hidden_size);
     }
 
     return logits_.data();
@@ -642,10 +885,18 @@ const float* HyperGQEEngine::forward(int token_id, int pos) {
 int HyperGQEEngine::sample(const float* logits, float temperature, float top_p, int top_k, float rep_penalty) {
     std::vector<float> work_logits(logits, logits + config_.vocab_size);
 
-    // Repetition penalty
+    // Calibrated sliding-window repetition penalty (last 32 tokens, content words only)
     if (rep_penalty != 1.0f && !generated_tokens_.empty()) {
-        for (int prev_tok : generated_tokens_) {
-            if (prev_tok >= 0 && prev_tok < config_.vocab_size) {
+        int window_size = 32;
+        int start_idx = std::max(0, static_cast<int>(generated_tokens_.size()) - window_size);
+        std::unordered_set<int> seen;
+        for (size_t i = start_idx; i < generated_tokens_.size(); ++i) {
+            int prev_tok = generated_tokens_[i];
+            // Never penalize newlines, spaces, periods, or list numbers (0-9)
+            if (prev_tok == 198 || prev_tok == 220 || prev_tok == 13 || (prev_tok >= 15 && prev_tok <= 25)) {
+                continue;
+            }
+            if (prev_tok >= 0 && prev_tok < config_.vocab_size && seen.insert(prev_tok).second) {
                 if (work_logits[prev_tok] > 0.0f) {
                     work_logits[prev_tok] /= rep_penalty;
                 } else {

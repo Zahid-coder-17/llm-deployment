@@ -48,19 +48,32 @@ public:
         std::vector<int> tokens_to_prefill = prompt_tokens.empty() ? std::vector<int>{128000} : prompt_tokens;
         int current_pos = 0;
 
-        // Prefill prompt
+        // Prefill prompt (skip expensive 128k LM head until final prefill token)
         const float* logits = nullptr;
-        for (int tok : tokens_to_prefill) {
-            logits = engine_->forward(tok, current_pos++);
+        size_t prefill_count = tokens_to_prefill.size();
+        for (size_t i = 0; i < prefill_count; ++i) {
+            if (stop_flag_) break;
+            bool is_last = (i + 1 == prefill_count);
+            logits = engine_->forward(tokens_to_prefill[i], current_pos++, is_last);
         }
 
         // Autoregressive generation
         int tokens_generated = 0;
         int next_token = 0;
+        int last_token = -1;
+        int prev_last_token = -2;
+        int prev_3_token = -3;
 
+        // Calibrated repetition penalty: 1.05 for conversation (temp > 0.05), 1.0 for agent tool actions
+        float rep_penalty = (config.temperature > 0.05f) ? 1.05f : 1.0f;
         while (tokens_generated < config.max_tokens && !stop_flag_) {
             if (!logits) break;
-            next_token = engine_->sample(logits, config.temperature, config.top_p, config.top_k, 1.25f);
+            next_token = engine_->sample(logits, config.temperature, config.top_p, config.top_k, rep_penalty);
+
+            // Break degenerate repetition loops (same token repeated 3+ times consecutively)
+            if (tokens_generated >= 3 && next_token == last_token && next_token == prev_last_token) {
+                break;
+            }
 
             if (!has_first_token) {
                 first_token_time = std::chrono::high_resolution_clock::now();
@@ -68,15 +81,20 @@ public:
             }
 
             tokens_generated++;
+            bool is_eos = (next_token == config.eos_token_id || next_token == 128001 || next_token == 128009);
 
-            // Stream token to listener
+            // Stream token to listener (skip emitting raw EOS token text, just signal is_final)
             if (callback) {
-                callback("", next_token, (tokens_generated >= config.max_tokens || next_token == config.eos_token_id));
+                callback("", next_token, (tokens_generated >= config.max_tokens || is_eos));
             }
 
-            if (next_token == config.eos_token_id) {
+            if (is_eos) {
                 break;
             }
+
+            prev_3_token = prev_last_token;
+            prev_last_token = last_token;
+            last_token = next_token;
 
             // Next forward step
             logits = engine_->forward(next_token, current_pos++);

@@ -1,0 +1,1 @@
+bug report: Memory allocation check on low VRAM

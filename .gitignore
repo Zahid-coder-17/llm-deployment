@@ -50,3 +50,8 @@ gpu_mobile_inference.png
 *.swo
 .DS_Store
 Thumbs.db
+
+
+hf_cache/
+unsloth_compiled_cache/
+.torch_cache/

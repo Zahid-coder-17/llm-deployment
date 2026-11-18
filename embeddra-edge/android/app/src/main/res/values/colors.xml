@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- YORI Glassmorphism Design System Colors -->
+    <color name="yori_bg">#0C0B0E</color>
+    <color name="yori_glass_surface">#B8161520</color>
+    <color name="yori_glass_border">#30FFFFFF</color>
+    <color name="yori_glass_subtle">#6013121A</color>
+    
+    <color name="yori_accent">#CC785C</color>
+    <color name="yori_accent_hover">#B6664C</color>
+    <color name="yori_accent_light">#2A1E1A</color>
+
+    <color name="yori_text_primary">#FFFFFF</color>
+    <color name="yori_text_secondary">#9E9AA6</color>
+    <color name="yori_text_muted">#686472</color>
+
+    <color name="yori_bubble_user">#E0CC785C</color>
+    <color name="yori_bubble_agent">#B0181624</color>
+    <color name="yori_thought_bg">#70100F18</color>
+    <color name="yori_thought_border">#25FFFFFF</color>
+    <color name="yori_green">#10B981</color>
+
+    <!-- Legacy / Compatibility Aliases -->
+    <color name="embeddra_canvas">#0F0E11</color>
+    <color name="embeddra_surface">#1A1822</color>
+    <color name="embeddra_surface_cream">#15131C</color>
+    <color name="embeddra_badge_bg">#282535</color>
+    <color name="embeddra_border">#2C2938</color>
+    <color name="embeddra_border_strong">#3D3A4B</color>
+
+    <color name="embeddra_terracotta">#CC785C</color>
+    <color name="embeddra_terracotta_hover">#B5674C</color>
+    <color name="embeddra_terracotta_light">#2A1E1A</color>
+    <color name="embeddra_terracotta_border">#CC785C</color>
+
+    <color name="embeddra_dark">#0F0E11</color>
+    <color name="embeddra_text_primary">#FFFFFF</color>
+    <color name="embeddra_text_secondary">#9E9AA6</color>
+    <color name="embeddra_text_muted">#686472</color>
+
+    <color name="embeddra_green">#10B981</color>
+    <color name="embeddra_green_bg">#132B20</color>
+</resources>
